@@ -30,20 +30,22 @@ namespace History.Repositories
             }
         }
 
-        /*public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            var qry = @"update emp set isdeleted=1,( output
+
+            var qry = @"update emp set isdeleted=1 output
                         inserted.id,inserted.name,inserted.city into empHis(id, name, city) where id= @id";
 
             using (var connection = _context.CreateConnection())
             {
                 connection.Open();
-                var res = await connection.ExecuteAsync(qry, employee);
-                var resulr = await connection.ExecuteAsync("Update emphis set operation='Updated' where hid=(SELECT max(hid) FROM empHis)");
-                return res;
+                var obje=await connection.QuerySingleAsync<Employee>("select * from emp where id=@id",new { id = id });
+                var res = await connection.ExecuteAsync(qry, obje);
+                var resulr = await connection.ExecuteAsync("Update emphis set operation='Deleted' where hid=(SELECT max(hid) FROM empHis)");
+                
             }
         }
-        */
+        
         public async Task<BaseResponse> GetAll(int pageno,int pagesize)
         {
             List<Employee> employees = new List<Employee>();

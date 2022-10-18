@@ -8,6 +8,6 @@ namespace History.Repositories.Interfaces
         public Task<BaseResponse> GetAll(int pageno,int pagesize);
         public Task <int> AddEmployee(Employee employee);
         public Task<int> UpdateEmp(Employee employee);
-        //public Task Delete(int id);
+        public Task Delete(int id);
     }
 }

@@ -39,6 +39,19 @@ namespace History.Controller
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpDelete("Deleteemp")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                 await repository.Delete(id);
+                return Ok(1);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll(int pageno,int pagesize)
         {
