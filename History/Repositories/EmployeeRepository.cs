@@ -39,7 +39,7 @@ namespace History.Repositories
             using (var connection = _context.CreateConnection())
             {
                 connection.Open();
-                var obje=await connection.QuerySingleAsync<Employee>("select * from emp where id=@id",new { id = id });
+                var obje=await connection.QuerySingleAsync<Employee>("select *  from emp where id=@id",new { id = id });
                 var res = await connection.ExecuteAsync(qry, obje);
                 var resulr = await connection.ExecuteAsync("Update emphis set operation='Deleted' where hid=(SELECT max(hid) FROM empHis)");
                 
