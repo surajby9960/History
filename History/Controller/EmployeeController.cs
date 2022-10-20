@@ -10,9 +10,11 @@ namespace History.Controller
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeRepository repository;
-        public EmployeeController(IEmployeeRepository repository)
+        private readonly ICompanyRepository companyRepository;
+        public EmployeeController(IEmployeeRepository repository, ICompanyRepository companyRepository)
         {
             this.repository = repository;
+            this.companyRepository = companyRepository;
         }
         [HttpPost("AddEmployee")]
         public async Task<IActionResult> Add(Employee employee)
@@ -64,6 +66,46 @@ namespace History.Controller
                 baseResponse.PageData = data.PageData;
                 return Ok(baseResponse);
             }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("AllCompany")]
+        public async Task <IActionResult> GetAllcomp()
+        {
+            try
+            {
+                var comp = await companyRepository.GetallComp();
+                return Ok(comp);
+            }catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPost("AddComp")]
+        public async Task <IActionResult > AddCompp(Company company)
+        {
+            try
+            {
+                var res = await companyRepository.InsertCompany(company);
+                return Ok(res);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("UpdateComp")]
+        public async Task<IActionResult> Updatecomp(Company company)
+        {
+            try
+            {
+                var res = await companyRepository.UpdaateComp(company);
+                return Ok(res);
+
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

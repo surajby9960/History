@@ -5,7 +5,7 @@ using Dapper;
 
 namespace History.Repositories
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : IEmployeeRepository,ICompanyRepository
     {
         private readonly DapperContext _context;
         public EmployeeRepository(DapperContext context)
@@ -81,6 +81,39 @@ namespace History.Repositories
 
             }
            
+        }
+
+        public async Task<IEnumerable<Company>> GetallComp()
+        {
+            using(var con=_context.CreateConnection())
+            {
+                con.Open();
+                var compnay = await con.QueryAsync<Company>("Select * from company");
+                return compnay.ToList();
+            }
+        }
+
+        public async Task<int> InsertCompany(Company company)
+        {
+            var qry = "insert into company(name,salary)values(@name,@salary)";
+            using (var con = _context.CreateConnection())
+            {
+                con.Open();
+                var res = await con.ExecuteAsync(qry,company);
+                return res;
+            }
+        }
+
+        public async Task<int> UpdaateComp(Company company)
+        {
+
+            var qry = "Update company set name=@name,salary=@salary where id=@id";
+            using (var con = _context.CreateConnection())
+            {
+                con.Open();
+                var res = await con.ExecuteAsync(qry, company);
+                return res;
+            }
         }
 
         public async Task<int> UpdateEmp(Employee employee)
